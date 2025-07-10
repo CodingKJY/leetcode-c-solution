@@ -55,53 +55,77 @@ int maxFreeTime(int eventTime, int k, int* startTime, int startTimeSize, int* en
 // Run Test
 // 
 typedef struct {
-    int eventTime;
+    int start;
+    int end;
+} Event;
+#define EVENT(start, end) (Event){start,end}
+#define MAX_EVENTS 100000
+
+typedef struct {
     int k;
     int n;
+    int eventTime;
+    Event events[MAX_EVENTS];
+} Events_Series;
+
+typedef struct {
+    int k;
+    int n;
+    int eventTime;
     int *startTime;
     int *endTime;
 } Testcase;
 
 void solution(void) {
-    Testcase test;
-    int events[][2] = {
-        // {0,1},
-        // {2,4},
-        // {9,10},
-
-        // {0,1},
-        // {1,2},
-        // {2,3},
-        // {3,4},
-        // {4,5},
-
-        {7,10},
-        {10,14},
-        {16,18},
+    Events_Series series[] = {
+        {  // 7
+            .k = 1,
+            .n = 2,
+            .events = {
+                EVENT(0,1),
+                EVENT(2,4),
+                EVENT(9,10),
+            },
+            .eventTime = 10,
+        },
+        {  // 0
+            .k = 2,
+            .n = 5,
+            .events = {
+                EVENT(0,1),
+                EVENT(1,2),
+                EVENT(2,3),
+                EVENT(3,4),
+                EVENT(4,5),
+            },
+            .eventTime = 5,
+        },
+        { // 7
+            .k = 1,
+            .n = 3,
+            .events = {
+                EVENT(7,10),
+                EVENT(10,14),
+                EVENT(16,18),
+            },
+        }
     };
-    int eventTime[] = {
-        // 10,
-        // 5,
-        21
-    };
-    int k[] = {
-        // 1,
-        // 2,
-        1
-    };
 
-    test.eventTime = eventTime[0];
-    test.k = k[0];
-    test.n = ARRAY_SIZE(events);
-    test.startTime = malloc(test.n * sizeof(int));
-    test.endTime = malloc(test.n * sizeof(int));
-    for (int i = 0; i < test.n; i++) {
-        test.startTime[i] = events[i][0];
-        test.endTime[i] = events[i][1];
+    for (int i = 0; i < ARRAY_SIZE(series); i++) {
+        Testcase test;
+        test.k = series[i].k;
+        test.n = series[i].n;
+        test.eventTime = series[i].eventTime;
+        test.startTime = malloc(test.n * sizeof(int));
+        test.endTime = malloc(test.n * sizeof(int));
+        for (int j = 0; j < test.n; j++) {
+            test.startTime[j] = series[i].events[j].start;
+            test.endTime[j] = series[i].events[j].end;
+        }
+        printf("%d\n", maxFreeTime(test.eventTime, test.k, test.startTime, test.n, test.endTime, test.n));
+        if (test.startTime) free(test.startTime);
+        if (test.endTime) free(test.endTime);
+        test.startTime = NULL;
+        test.endTime = NULL;
     }
-
-    printf("%d\n", maxFreeTime(test.eventTime, test.k, test.startTime, test.n, test.endTime, test.n));
-
-    if (test.startTime) free(test.startTime);
-    if (test.endTime) free(test.endTime);
 }
