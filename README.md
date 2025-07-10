@@ -1,7 +1,7 @@
 # Leetcode Solution in C
 
 ### To-Do
-- [ ] 1353 not done yet
+- [ ] 1751 not done yet
 - [ ] working on 3440
 
 ### Usage
@@ -16,5 +16,5 @@ make [problem-id]
 ```
 
 ### Add Solution
-1. Create `ID_*.c` (see [template.c](src/template.c))
+1. Generate template by `make temp PROB="<number>. <problem_name>"`
 2. Implement `void solution(void)`
