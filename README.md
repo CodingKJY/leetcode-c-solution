@@ -1,5 +1,9 @@
 # Leetcode Solution in C
 
+### To-Do
+- [ ] 1353 not done yet
+- [ ] working on 3440
+
 ### Usage
 Check solved problems
 ```bash
