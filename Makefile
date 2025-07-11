@@ -29,7 +29,12 @@ list:
 			[ -f "$$f" ] || continue; \
 			filename=$$(basename $$f); \
 			title=$$(echo $$filename | sed 's/^[0-9]*_//' | sed 's/\.c$$//' | tr '_' ' '); \
-			echo "  make $$num  - $$title"; \
+			solved_status=$$(grep -E "^#define\s+SOLVED\s+" "$$f" | awk '{print $$3}' | head -1); \
+			if [ "$$solved_status" = "0" ]; then \
+				echo "  make $$num  - $$title (Unsolved)"; \
+			else \
+				echo "  make $$num  - $$title"; \
+			fi; \
 			break; \
 		done \
 	done

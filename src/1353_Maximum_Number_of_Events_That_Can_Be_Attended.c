@@ -1,4 +1,5 @@
-#include "leetcode.h"
+#define SOLVED 1
+#include "leetcode.h" 
 
 // 
 // Implementations

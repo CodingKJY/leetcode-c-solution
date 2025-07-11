@@ -1,3 +1,4 @@
+#define SOLVED 0
 #include "leetcode.h"
 
 // 
