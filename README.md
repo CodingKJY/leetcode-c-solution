@@ -1,8 +1,9 @@
 # Leetcode Solution in C
 
-### To-Do
-- [ ] 1751 not done yet
-- [ ] working on 3440
+### Working on
+- [ ] 1751
+- [ ] 3440
+- [ ] 2402
 
 ### Usage
 Check solved problems
