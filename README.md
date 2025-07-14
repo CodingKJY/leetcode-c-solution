@@ -3,7 +3,6 @@
 ### Working on
 - [ ] 1751
 - [ ] 3440
-- [ ] 2402
 
 ### Usage
 Check solved problems
