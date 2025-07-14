@@ -18,7 +18,7 @@ void solution(void) {
         
     };
 
-    for (int i = 0; i < sizeof(tests)/sizeof(Testcase); i++) {
+    for (int i = 0; i < ARRAY_SIZE(tests); i++) {
         
     }
 }
