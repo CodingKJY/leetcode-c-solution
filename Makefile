@@ -7,6 +7,7 @@ SDIR := src
 # ======== Sources
 # =========================================================
 PROG_SRCS_y += $(SDIR)/main.c
+PROG_SRCS_y += $(SDIR)/utils.c
 PROBLEM_NUMBERS = $(notdir $(shell ls $(SDIR)/[0-9]*_*.c 2>/dev/null | sed 's/_.*\.c//' | sort -n))
 
 # =========================================================
@@ -47,8 +48,8 @@ $(1): $(shell ls $(SDIR)/$(1)_*.c 2>/dev/null | head -1)
 		exit 1; \
 	fi
 	@echo "Compiling LeetCode problem $(1)"
-	$(CC) $(CFLAGS) -o $(TARGET) $(PROG_SRCS) $$< $(LDFLAGS) || exit 1
-	@echo "✓ Compiled successfully"
+	@$(CC) $(CFLAGS) -o $(TARGET) $(PROG_SRCS) $$< $(LDFLAGS) || exit 1
+	@echo "Compiled successfully"
 	@echo "------ Run Test ------"
 	@./test
 endef
