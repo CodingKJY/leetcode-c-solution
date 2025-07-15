@@ -5,7 +5,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stddef.h>
+#include <stdbool.h>
 #include <math.h>
+#include <ctype.h>
 #include "uthash.h"
 #include "utlist.h"
 
