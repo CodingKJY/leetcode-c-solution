@@ -27,23 +27,9 @@ typedef struct {
     int (*cmp)(void *, void *);
 } Heap;
 
-static inline Heap HEAP_INIT(size_t size, int (*cmp)(void *, void *)) {
-    Heap heap;
-    heap.data = malloc(MAX_HEAP_CAPACITY * size);
-    if (!heap.data)
-        return (Heap){0};
-    heap.len = 0;
-    heap.size = size;
-    heap.capacity = MAX_HEAP_CAPACITY;
-    heap.cmp = cmp;
-    return heap;
-};
-
-static inline void HEAP_RELEASE(Heap *heap) {
-    if (heap->data) free(heap->data);
-}
-
 typedef struct {
+    Heap (*INIT)(size_t size, int (*cmp)(void *, void *));
+    void (*FREE)(Heap *heap);
     int (*PUSH)(Heap *heap, void *data);
     int (*POP)(Heap *heap, void *res);
     void (*PEEK)(Heap *heap, void *res);

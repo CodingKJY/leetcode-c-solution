@@ -17,19 +17,19 @@ heap_get(Heap *heap, size_t idx)
 }
 
 static void
-buttom_up(Heap *heap, size_t idx)
+heap_buttom_up(Heap *heap, size_t idx)
 {
     if (idx == 0) return;
     
     size_t parent = (idx - 1) / 2;
     if (heap->cmp(heap_get(heap, idx), heap_get(heap, parent))) {
         swap(heap_get(heap, idx), heap_get(heap, parent), heap->size);
-        buttom_up(heap, parent);
+        heap_buttom_up(heap, parent);
     }
 }
 
 static void
-top_down(Heap *heap, size_t idx)
+heap_top_down(Heap *heap, size_t idx)
 {
     size_t left = 2 * idx + 1;
     size_t right = 2 * idx + 2;
@@ -43,37 +43,37 @@ top_down(Heap *heap, size_t idx)
     }
     if (largest != idx) {
         swap(heap_get(heap, idx), heap_get(heap, largest), heap->size);
-        top_down(heap, largest);
+        heap_top_down(heap, largest);
     }
 }
 
 static int
-_PUSH(Heap *heap, void *data)
+HEAP_PUSH(Heap *heap, void *data)
 {
     if (heap->len >= heap->capacity) 
         return -1;
 
     int i = heap->len++;
     memcpy(heap_get(heap, i), data, heap->size);
-    buttom_up(heap, i);
+    heap_buttom_up(heap, i);
     return 0;
 }
 
 static int
-_POP(Heap *heap, void *res)
+HEAP_POP(Heap *heap, void *res)
 {
     if (heap->len == 0) 
         return -1;
-
-    memcpy(res, heap_get(heap, 0), heap->size);
+    if (res)
+        memcpy(res, heap_get(heap, 0), heap->size);
     memcpy(heap_get(heap, 0), heap_get(heap, heap->len - 1), heap->size);
     heap->len -= 1;
-    top_down(heap, 0);
+    heap_top_down(heap, 0);
     return 0;
 }
 
 static void
-_PEEK(Heap *heap, void *res)
+HEAP_PEEK(Heap *heap, void *res)
 {
     if (heap->len == 0) {
         memset(res, 0, heap->size);
@@ -83,14 +83,32 @@ _PEEK(Heap *heap, void *res)
 }
 
 static int
-_IS_EMPTY(Heap *heap)
+HEAP_IS_EMPTY(Heap *heap)
 {
     return !heap->len;
 }
 
+static Heap HEAP_INIT(size_t size, int (*cmp)(void *, void *)) {
+    Heap heap;
+    heap.data = malloc(MAX_HEAP_CAPACITY * size);
+    if (!heap.data)
+        return (Heap){0};
+    heap.len = 0;
+    heap.size = size;
+    heap.capacity = MAX_HEAP_CAPACITY;
+    heap.cmp = cmp;
+    return heap;
+};
+
+static void HEAP_RELEASE(Heap *heap) {
+    if (heap->data) free(heap->data);
+}
+
 Heap_op HEAP = {
-    .POP = _POP,
-    .PUSH = _PUSH,
-    .PEEK = _PEEK,
-    .IS_EMPTY = _IS_EMPTY,
+    .INIT = HEAP_INIT,
+    .FREE = HEAP_RELEASE,
+    .POP = HEAP_POP,
+    .PUSH = HEAP_PUSH,
+    .PEEK = HEAP_PEEK,
+    .IS_EMPTY = HEAP_IS_EMPTY,
 };

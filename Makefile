@@ -40,6 +40,22 @@ list:
 		done \
 	done
 
+list-unsolved:
+	@echo "Unsolved LeetCode problems:"
+	@echo "=========================="
+	@for num in $(PROBLEM_NUMBERS); do \
+		for f in $(SDIR)/$$num\_*.c; do \
+			[ -f "$$f" ] || continue; \
+			filename=$$(basename $$f); \
+			title=$$(echo $$filename | sed 's/^[0-9]*_//' | sed 's/\.c$$//' | tr '_' ' '); \
+			solved_status=$$(grep -E "^#define\s+SOLVED\s+" "$$f" | awk '{print $$3}' | head -1); \
+			if [ "$$solved_status" = "0" ]; then \
+				echo "  make $$num  - $$title"; \
+			fi; \
+			break; \
+		done \
+	done
+
 define PROBLEM_RULE
 $(1): $(shell ls $(SDIR)/$(1)_*.c 2>/dev/null | head -1)
 	@if [ -z "$$<" ]; then \
