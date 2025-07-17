@@ -40,7 +40,7 @@ list:
 		done \
 	done
 
-list-unsolved:
+unsolved:
 	@echo "Unsolved LeetCode problems:"
 	@echo "=========================="
 	@for num in $(PROBLEM_NUMBERS); do \
