@@ -8,6 +8,8 @@
 #include <stdbool.h>
 #include <math.h>
 #include <ctype.h>
+#include <arpa/inet.h>
+
 #include "uthash.h"
 #include "utlist.h"
 
