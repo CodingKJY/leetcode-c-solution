@@ -22,6 +22,13 @@ PROG_SRCS := $(PROG_SRCS_y)
 # =========================================================
 # ======== Recipes
 # =========================================================
+help:
+	@echo "Usage:"
+	@echo "  make            show this help message"
+	@echo "  make list       show all working problems"
+	@echo "  make unsolved   show unsolved problems"
+	@echo "  make [ID]       test problem [ID]"
+
 list:
 	@echo "Available LeetCode problems:"
 	@echo "=========================="
