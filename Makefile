@@ -17,7 +17,7 @@ TARGET    := test
 CC        := $(CROSS_COMPILE)gcc
 CFLAGS    := -O2 -I$(CURDIR)/include
 LDFLAGS   := -lm
-PROG_SRCS   := $(PROG_SRCS_y)
+PROG_SRCS := $(PROG_SRCS_y)
 
 # =========================================================
 # ======== Recipes
