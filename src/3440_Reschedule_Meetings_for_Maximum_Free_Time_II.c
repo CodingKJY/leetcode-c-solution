@@ -1,4 +1,4 @@
-#define SOLVED 0
+#define SOLVED 1
 #include "leetcode.h"
 
 // 
@@ -6,15 +6,47 @@
 // 
 int maxFreeTime(int eventTime, int* startTime, int startTimeSize, int* endTime, int endTimeSize) {
     int maxFreeTime = 0;
-    int left_gap, main_gap, right_gap;
-    int _left_gap, _main_gap, _right_gap;
     int size = startTimeSize;
+    int gaps[size + 1];
 
-    left_gap = startTime[0];
-    main_gap = startTime[1] - endTime[0];
-    right_gap = size == 2 ? eventTime - endTime[size - 1] : startTime[2] - endTime[1];
-    for (int i = 2; i < size; i += 2) {
-        
+    gaps[0] = startTime[0];
+    gaps[size] = eventTime - endTime[size - 1];
+    for (int i = 1; i < size; i++) {
+        gaps[i] = startTime[i] - endTime[i - 1];
+    }
+
+    int prefixMax[size + 1];
+    prefixMax[0] = gaps[0];
+    for (int i = 1; i < size + 1; i++) {
+        prefixMax[i] = MAX(gaps[i], prefixMax[i - 1]);
+    }
+
+    int suffixMax[size + 1];
+    suffixMax[size] = gaps[size];
+    for (int i = size - 1; i >= 0; i--) {
+        suffixMax[i] = MAX(gaps[i], suffixMax[i + 1]);
+    }
+
+    int meetingTime;
+    int freeTime;
+    // try left bound
+    meetingTime = endTime[0] - startTime[0];
+    freeTime = suffixMax[2] >= meetingTime ? gaps[0] + gaps[1] + meetingTime : gaps[0] + gaps[1];
+    maxFreeTime = MAX(maxFreeTime, freeTime);
+
+    // try right bound
+    meetingTime = endTime[size - 1] - startTime[size - 1];
+    freeTime = prefixMax[size - 2] >= meetingTime ? gaps[size - 1] + gaps[size] + meetingTime : gaps[size - 1] + gaps[size];
+    maxFreeTime = MAX(maxFreeTime, freeTime);
+
+    // try internal
+    for (int i = 1; i < size - 1; i++) {
+        meetingTime = endTime[i] - startTime[i];
+        if (suffixMax[i + 2] >= meetingTime || prefixMax[i - 1] >= meetingTime)
+            freeTime = gaps[i] + gaps[i + 1] + meetingTime;
+        else
+            freeTime = gaps[i] + gaps[i + 1];
+        maxFreeTime = MAX(maxFreeTime, freeTime);
     }
 
     return maxFreeTime;
@@ -55,6 +87,24 @@ void solution(void) {
             .eventSize = 5,
             .startTime = {0,1,2,3,4},
             .endTime   = {1,2,3,4,5},
+        },
+        {  // 81
+            .eventTime = 178,
+            .eventSize = 4,
+            .startTime = {3,20,98,118},
+            .endTime   = {17,39,111,141},
+        },
+        {  // 21
+            .eventTime = 62,
+            .eventSize = 3,
+            .startTime = {14,21,40},
+            .endTime   = {16,36,59},
+        },
+        {  // 23
+            .eventTime = 59,
+            .eventSize = 5,
+            .startTime = {6,21,34,50,56},
+            .endTime   = {11,25,50,56,59},
         },
     };
 
